@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Maze Project</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!--link rel="stylesheet" href="styles/common.css" -->
+		<link rel="stylesheet" href="styles/footer.css"> 
+		<link rel="stylesheet" href="styles/header.css">
+
+		<link
+		href="https://cdn.jsdelivr.net/npm/
+		remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+	</head>	
+	<body>
+		<header>
+			<nav>
+				<div class="nav_header">
+					<div class="nav_logo">
+					<a href='#'>RAYCASTING</a>
+					</div>
+					<ul class="nav_links" id="nav-links">
+						<li><a href="#">HOME</a>
+						</li>
+						<li><a href="#">ABOUT</a>
+						</li>
+						<li><a href="#">CONTACTS</a>
+						</li>
+					</ul>
+					<div class="nav_btns">
+						<button class="btn"></button>
+						<button class="btn"></button>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<div class="container">
+			<div class="images right">
+				<p> Basic Idea of Raycasting
+				<img src="images/2d-raycast.png" alt="SDL2" 
+				class="ray1" width="500" height="250"/>
+				</p>
+				<p> Wolfenstein 3D
+				<img src="images/wolf3d.jpg" alt="images"
+				width="500" height="250"/>
+				</p>
+				<p> Textured Raycast Walls
+				<img src="images/rayc3d.jpg" alt="images"
+				width="500" height="250"/>
+				</p>
+			</div>
+			<div class="content">
+				<h2></h2>
+				<p>
+				Raycasting is a rendering technique to create a 3D perspective in a 2D map. Back when computers were slower it wasn't possible to run real 3D engines in realtime, and raycasting was the first solution. Raycasting can go very fast, because only a calculation has to be done for every vertical line of the screen. The most well known game that used this technique, is of course Wolfenstein 3D.</p>
+				<br>
+				<p>
+
+The raycasting engine of Wolfenstein 3D was very limited, allowing it to run on a even a 286 computer: all the walls have the same height and are orthogonal squares on a 2D grid, as can be seen in this screenshot from a mapeditor for Wolf3D:
+				</p>
+				<br>
+				<p>
+				Things like stairs, jumping or height differences are impossible to make with this engine. Later games such as Doom and Duke Nukem 3D also used raycasting, but much more advanced engines that allowed sloped walls, different heights, textured floors and ceilings, transparent walls, etc...
+				<p>
+Raycasting is not the same as raytracing! Raycasting is a fast semi-3D technique that works in realtime even on 4MHz graphical calculators, while raytracing is a realistic rendering technique that supports reflections and shadows in true 3D scenes, and only recently computers became fast enough to do it in realtime for reasonably high resolutions and complex scenes.
+				</p>
+			</div>
+		</div>
+		<footer>
+		</footer>
+	</body>
+</html>
