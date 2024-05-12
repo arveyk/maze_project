@@ -1,7 +1,12 @@
-<h1><-- The Maize Project --></h1>
+<h1><-- The Maze Project --></h1>
 
-This is a Portfolio project ment to showcase skill learned in the 9months of theALX SE foundations
+In this project I am implementing Raycasting semi-3D rendering technique to make a sample game or program.
+The implementation is in C and a special library SDL2 will be used as well.
 
+<h3>Why Implement in C?</h3>
+C is a simple language to study but difficult to program with. It requires a certain kind of discipline, especially with pointers (Those pointy things can be dangerouse!). So it is difficult to implement at many levels but the encouter is worth it since I've learned a lot. Using it helps in understanding program flow and logic
+
+<h3>Raycasting</h3>
 It utilizes a library called SDL (simple Multimedia Library) version 2
 
 The technique being used to create 3D images is raycasting. It is not a true 3D renderer thus but is a very fast technique
@@ -28,6 +33,12 @@ The angle of the viewer is also an important consideration. Euclidean angles can
 <h3><i>Inspiration</i></h3>
 This raycasting project is a good challenge since it incorporates mathematics and programming. Also creating a 3D rendering program is a step toward creating fully functioning full scale programs.
 
-
 <h3>Challenges</h3>
 So far I have managed to project an image on the SDL window.
+
+<h3> Technologies Used</h3>
+<ul>
+<li>C Programming Language</li>
+<li>SDL version2</li>
+</ul>
+
