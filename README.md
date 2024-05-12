@@ -28,7 +28,7 @@ be projected and the ceiling and floor ought to be drawn. One fast algorithm use
 
 The angle of the viewer is also an important consideration. Euclidean angles can be used to represent the players direction. Another method employed is using vectors and a camera.
 
-<img src="images/raycastingcamera.gif" alt="Raycasting">Raycasting</img>
+<img src="landing_page/images/raycastingcamera.gif" alt="Raycasting">Raycasting</img>
 
 <h3><i>Inspiration</i></h3>
 This raycasting project is a good challenge since it incorporates mathematics and programming. Also creating a 3D rendering program is a step toward creating fully functioning full scale programs.
