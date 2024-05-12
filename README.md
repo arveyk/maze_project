@@ -1,4 +1,4 @@
-<-- The Maize Project -->
+<h1><-- The Maize Project --></h1>
 
 This is a Portfolio project ment to showcase skill learned in the 9months of theALX SE foundations
 
@@ -10,7 +10,8 @@ and require little resource to render since calculations are only done for verti
 The most well known game that applied this technique is Wolfenstein 3D.
 Raycasting is different from raytracing is a true 3D rendering technique.
 
-<b><i>The Basic Idea </i></b>
+<b><h3>The Basic Idea </h3></b>
+<br>
 The basic idea of raycasting is as follows: the map is a 2D square grid, and each square can either be 0 (= no wall), or a positive value (= a wall with a certain color or texture).
 
 For every x of the screen (i.e. for every vertical stripe of the screen), send out a ray that starts at the player location and with a direction that depends on both the player's looking direction, and the x-coordinate of the screen. Then, let this ray move forward on the 2D map, until it hits a map square that is a wall. 
@@ -22,9 +23,9 @@ be projected and the ceiling and floor ought to be drawn. One fast algorithm use
 
 The angle of the viewer is also an important consideration. Euclidean angles can be used to represent the players direction. Another method employed is using vectors and a camera.
 
-<img src="raycastingcamera.gif" alt="Raycasting">Raycasting</img>
+<img src="images/raycastingcamera.gif" alt="Raycasting">Raycasting</img>
 
-<i>Inspiration</i>
+<h3><i>Inspiration</i></h3>
 This raycasting project is a good challenge since it incorporates mathematics and programming. Also creating a 3D rendering program is a step toward creating fully functioning full scale programs.
 
 
