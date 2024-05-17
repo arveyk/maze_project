@@ -42,3 +42,7 @@ So far I have managed to project an image on the SDL window.
 <li>SDL version2</li>
 </ul>
 
+<h3>Team</h3>
+Harvey Kis.	Landing-page design, project execution
+		email: harveykisiangani@gmail.com
+		linkedin: 
