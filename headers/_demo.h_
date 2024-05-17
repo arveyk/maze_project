@@ -1,0 +1,20 @@
+#ifndef _DEMO_H_
+#define _DEMO_H_
+
+#include <SDL2/SDL.h>
+
+typedef struct SDL_Instance
+{
+	SDL_Window *window;
+	SDL_Renderer *renderer;
+} SDL_Instance;
+
+
+int init_instance(SDL_Instance *instance, int screenW, int screenH,
+	int start, char msg[]);
+
+void cls(SDL_Renderer *renderer, SDL_Window *window);
+SDL_Texture *loadTexture(SDL_Renderer *renderer, char texPath[]);
+int load_media(SDL_Surface *hello_image, char *file_path);
+	
+#endif
