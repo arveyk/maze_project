@@ -11,7 +11,7 @@ int load_media(SDL_Surface *hello_image, char *file_path)
 {
 	int success = 1;
 
-	hello_image = SDL_LoadBPM(filepath);
+	hello_image = SDL_LoadBMP(filepath);
 	if (hello_image == NULL)
 	{
 		printf("Unable to load image %s SDL Error: %s\n", file_path, SDL_GetError());

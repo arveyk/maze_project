@@ -9,6 +9,11 @@ typedef struct SDL_Instance
 	SDL_Renderer *renderer;
 } SDL_Instance;
 
+typedef struct player_pos
+{
+	int y;
+	int x;
+} coordinates;
 
 int init_instance(SDL_Instance *instance, int screenW, int screenH,
 	int start, char msg[]);

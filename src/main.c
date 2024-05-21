@@ -15,7 +15,7 @@ int load_media(SDL_Surface *hello_image, char *file_path);
 int main(void)
 {
 
-	SDL_Instance instance = NULL;
+	SDL_Instance instance;
 	SDL_Surface *screenSurface = NULL;
 	SDL_Surface* hello_image = NULL;
 	int quit = 0;
@@ -51,7 +51,7 @@ int main(void)
 		/*Update Screen*/
 		SDL_RenderPresent(instance.renderer);
 
-		if (!load_media())
+		if (!load_media(hello_image, "../images/hello_world.bmp"))
 			printf("Failed to load media!\n");
 		else
 		{

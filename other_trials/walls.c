@@ -5,6 +5,7 @@
 int poll_events(void);
 void draw_stuff(SDL_Instance instance);
 int init_instance(SDL_Instance *instance);
+void cls();
 
 #define mapWidth 24
 #define mapHeight 24
@@ -218,18 +219,18 @@ int main(void)
 		if (side == 1) /* give x and y sides different brighness*/
 			color = color / 2;
 		/* draw the pixels of the stripe as vertical line */
-		verLine(x, drawStart, drawEnd, color);
+		draw_stuff(x, drawStart, drawEnd, color);
 		oldTime = time;
 		time = getTicks();
 		/* time this frame has taken in seconds*/
 		frameTime = (time - oldTime) / 1000.0;
 		printf(1.0 / frameTime);
-		redraw();
+		/* redraw(); */
 		cls();
 		moveSpeed = frameTime * 5.0;
 		rotSpeed = frameTime * 3.0;
 
-		readKeys();
+		poll_events();
 		/* move forward if no wall in front of you */
 		if (keyDown(SDLK_UP))
 		{
@@ -339,3 +340,41 @@ void draw_stuff(SDL_Instance instance)
 	SDL_RenderDrawLine(instance.renderer, 10, 10, 100, 100);
 }
 
+int poll_events()
+{
+	SDL_Event event;
+	SDL_KeyboardEvent key;
+
+	while (SDL_PollEvent(&event))
+	{
+		switch (event.type)
+		{
+			case SDL_QUIT:
+				return (1);
+			case SDL_KEYDOWN:
+				key = event.key;
+				/* if 'ESCAPE' is pressed */
+				if (key.keysym.scancode == 0x29)
+					return (1);
+				break;
+			case SDL_KEYUP:
+				key = event.key;
+				break;
+			case SDLK_LEFT:
+				key = event.key;
+				break;
+			case SDLK_RIGHT:
+				key = event.key;
+				break;
+		}
+	}
+	return (0);
+
+
+}
+void cls(SDL_Instance instance)
+{
+	SDL_DestroyRenderer(instance.renderer);
+	SDL_DestroyWindow(instance.window);
+	SDL_Quit();
+}

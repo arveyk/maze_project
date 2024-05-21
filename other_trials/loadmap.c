@@ -26,3 +26,23 @@ void loadMap(const char *filename)
 	free(data);
 }
 
+/**
+ * loadMedia - initializes screen
+ * Return: true on success
+ */
+bool loadMedia(void)
+{
+	/* Loading success flag */
+	bool success = true;
+
+	/* Load splash image */
+	gHelloWorld = SDL_LoadBMP("hello_world.bmp");
+	if (gHelloWorld == NULL)
+	{
+		printf("Unable to load image %s! SDL Error: %s\n",
+				"hello_world.bmp", SDL_GetError());
+		success = false;
+	}
+
+	return (success);
+}

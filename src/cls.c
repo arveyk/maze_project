@@ -10,7 +10,7 @@
  *
  * Return: no return value
  */
-void cls(SDL_Renderer *renderer, SDL_Window *window)
+void cls(SDL_Renderer renderer, SDL_Window window)
 {
 	/* Free loaded image
 	if (texture != NULL)
@@ -18,10 +18,10 @@ void cls(SDL_Renderer *renderer, SDL_Window *window)
 	texture = NULL;
 	*/
 
-	if (window != NULL)
+	if (renderer != NULL)
 		SDL_DestroyRenderer(renderer);
 	
-	if (renderer != NULL)
+	if (window != NULL)
 		SDL_DestroyWindow(window);
 	window = NULL;
 	renderer = NULL;

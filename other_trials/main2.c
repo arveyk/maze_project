@@ -8,7 +8,8 @@
 #define SCREEN_HEIGHT 480 /* 200 */
 #define FOV 60
 #define PLAYER_HEIGHT 32 /* change to 24 / 2 */
-
+#define MAPWIDTH 24
+#define MAPHEIGHT 24
 
 /**
  * init - initializes screen
@@ -118,9 +119,12 @@ void draw_stuff(SDL_Instance instance, coordinates hit_point, int height_project
 	coordinates start;
 
 	start.y = 100 - (height_projection_slice / 2);
+	if (start.y < 0)
+		start.y = 0
 	start.x = hit_point.x;
-	printf("%d, %d\n", start.x, start.y);
 	endpY =  start.y + height_projection_slice;
+	if (endpY > 480)
+		endpY = 480;
 	endpX = start.x;
 
 	SDL_SetRenderDrawColor(instance.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -199,6 +203,7 @@ coordinates dda_alg(coordinates player_pos)
 	 * draw_stuff(insstance, startPoint, endPoint);
 	 *}
 	 */
+	printf("x: %d	y: %d\n",wall_point.x, wall_point.y);
 	return (wall_point);
 }
 
@@ -212,9 +217,35 @@ int main(void)
 	SDL_Instance instance;
 	coordinates initial_pos, hit_point;
 
+	int hit = 0;
 	int player_angle = 45;
-
 	int distance_to_wall, height_projection_slice;
+	int worldMap[24][24] = {
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 3, 0, 3, 0, 3, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 2, 2, 0, 2, 2, 0, 0, 0, 0, 3, 0, 3, 0, 3, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 4, 0, 4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 4, 0, 0, 0, 0, 5, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 4, 0, 4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 4, 0, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+	};
 
 	if (init(&instance) != 0)
 	{
@@ -257,9 +288,15 @@ int main(void)
 		 */
 
 
-		initial_pos.x = 12;
-		initial_pos.y = 12;
-		hit_point = dda_alg(initial_pos);
+		initial_pos.x = 0;
+		initial_pos.y = 0;
+		
+		while (hit == 0)
+		{
+			hit_point = dda_alg(initial_pos);
+			if (worldMap[hit_point.x][hit_point.y] > 0)
+				hit = 1;
+		}
 
 		distance_to_wall = abs(initial_pos.y - hit_point.y)
 			/ cos(player_angle);

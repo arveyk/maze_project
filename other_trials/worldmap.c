@@ -1,23 +1,21 @@
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include "../headers/maze.h"
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 
-bool init(void);
-bool loadMedia(void);
-void close(void);
 
-SDL_Window *gWindow = NULL;
-SDL_Surface *gScreenSurface = NULL;
-SDL_Surface *gHelloWorld = NULL;
+bool loadMedia(SDL_Surface* HelloWorld);
+bool init(SDL_Window *Window);
+void cls(SDL_Window *Window, SDL_Surface *ScreenSurface);
 
 /**
  * init - initializes screen
  * Return: true on success
  */
-bool init(void)
+bool init(SDL_Window *Window)
 {
 	bool success = true;
 
@@ -30,18 +28,13 @@ bool init(void)
 	else
 	{
 		/* Create window */
-		gWindow = SDL_CreateWindow("SDL Tutorial",
+		Window = SDL_CreateWindow("SDL Tutorial",
 				SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 				SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-		if (gWindow == NULL)
+		if (Window == NULL)
 		{
 			printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 			success = false;
-		}
-		else
-		{
-			/* Get window surface*/
-			gScreenSurface = SDL_GetWindowSurface(gWindow);
 		}
 	}
 	return (success);
@@ -51,14 +44,14 @@ bool init(void)
  * loadMedia - initializes screen
  * Return: true on success
  */
-bool loadMedia(void)
+bool loadMedia(SDL_Surface* HelloWorld)
 {
 	/* Loading success flag */
 	bool success = true;
 
 	/* Load splash image */
-	gHelloWorld = SDL_LoadBMP("hello_world.bmp");
-	if (gHelloWorld == NULL)
+	HelloWorld = SDL_LoadBMP("../images/hello_world.bmp");
+	if (HelloWorld == NULL)
 	{
 		printf("Unable to load image %s! SDL Error: %s\n",
 				"hello_world.bmp", SDL_GetError());
@@ -72,15 +65,17 @@ bool loadMedia(void)
  * close - initializes screen
  * Return: No return value
  */
-void close(void)
+void cls(SDL_Window *Window, SDL_Surface *HelloWorld)
 {
 	/*Deallocate surface */
-	SDL_FreeSurface(gHelloWorld);
-	gHelloWorld = NULL;
+	if (HelloWorld != NULL)
+		SDL_FreeSurface(HelloWorld);
+	HelloWorld = NULL;
 
 	/*Destroy window */
-	SDL_DestroyWindow(gWindow);
-	gWindow = NULL;
+	if (Window != NULL)
+		SDL_DestroyWindow(Window);
+	Window = NULL;
 
 	/* Quit SDL subsystems */
 	SDL_Quit();
@@ -92,23 +87,28 @@ void close(void)
  */
 int main(void)
 {
+	SDL_Window *Window = NULL;
+	SDL_Surface *ScreenSurface = NULL;
+	SDL_Surface *HelloWorld = NULL;
 	bool quit = false;
 	SDL_Event e;
 
-	if (!init())
+	if (!init(Window))
 	{
 		printf("Failed to initialize!\n");
 	}
 	else
 	{
-		if (!loadMedia())
+		/* Get window surface*/
+		ScreenSurface = SDL_GetWindowSurface(Window);
+		if (!loadMedia(HelloWorld))
 		{
 			printf("Failed to load media!\n");
 		}
 		else
 		{
-			SDL_BlitSurface(gHelloWorld, NULL, gScreenSurface, NULL);
-			SDL_UpdateWindowSurface(gWindow);
+			SDL_BlitSurface(HelloWorld, NULL, ScreenSurface, NULL);
+			SDL_UpdateWindowSurface(Window);
 			while (quit == false)
 			{
 				while (SDL_PollEvent(&e))
@@ -119,6 +119,6 @@ int main(void)
 			}
 		}
 	}
-	close();
+	cls(Window, HelloWorld);
 	return (0);
 }
