@@ -2,9 +2,12 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "../headers/_demo.h_"
+#include <math.h>
 
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
+#define SCREEN_WIDTH 640 /* 320 */
+#define SCREEN_HEIGHT 480 /* 200 */
+#define FOV 60
+#define PLAYER_HEIGHT 32 /* change to 24 / 2 */
 
 
 /**
@@ -76,6 +79,15 @@ int poll_events()
 				if (key.keysym.scancode == 0x29)
 					return (1);
 				break;
+			case SDL_KEYUP:
+				key = event.key;
+				break;
+			case SDLK_LEFT:
+				key = event.key;
+				break;
+			case SDLK_RIGHT:
+				key = event.key;
+				break;
 		}
 	}
 	return (0);
@@ -99,11 +111,97 @@ void close(void)
 	SDL_Quit();
 }*/
 
-void draw_stuff(SDL_Instance instance)
+void draw_stuff(SDL_Instance instance, coordinates hit_point, int height_projection_slice)
 {
+	int endpX;
+	int endpY;
+	coordinates start;
+
+	start.y = 100 - (height_projection_slice / 2);
+	start.x = hit_point.x;
+	printf("%d, %d\n", start.x, start.y);
+	endpY =  start.y + height_projection_slice;
+	endpX = start.x;
+
 	SDL_SetRenderDrawColor(instance.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-	SDL_RenderDrawLine(instance.renderer, 10 ,10, 100, 100);
+	SDL_RenderDrawLine(instance.renderer, start.x , start.y, endpX, endpY);
 }
+
+/**
+ * DDA
+ *
+ */
+
+coordinates dda_alg(coordinates player_pos)
+{
+	int player_posX = player_pos.x;
+	int player_posY = player_pos.y;
+	int player_angle = 45;
+	coordinates wall_point;
+	coordinates cross_point, cross_p2;
+
+	/*int Xa, Ya;  for Increments */
+
+	/* Check horizontal intersection */
+	/*Xa = 64 / tan(player_angle);  Horozontal increments
+	Ya = 64;*/
+
+	/* first intersection */
+	if (player_angle >= 0 && player_angle <= 180)
+		cross_point.y = floor(player_posY / 64) * 64 - 1;  /* facing up */
+	else
+		cross_point.y = floor(player_posY / 64) * 64 + 64; /* facing down */
+
+	cross_point.x = player_posX + (player_posY - cross_point.y) / tan(player_angle);
+	
+	/* Check vertical intersection 
+	Xa = 64;
+	Ya = 64 / tan(player_angle);*/
+
+	if (player_angle < 90 || player_angle > 270)
+		cross_p2.x = floor(player_posX) * 64 + 64; /* facing right */
+	else
+		cross_p2.x = floor(player_posX) * 64 - 1; /* facing left */
+
+	cross_p2.y = player_posY + (player_posX - cross_p2.x) 
+		* tan(player_angle);
+
+	/* take least of the crossing point */
+	if (cross_point.y > cross_p2.y)
+	{
+		wall_point.x = cross_p2.x;
+		wall_point.y = cross_p2.y;
+	}
+	else
+	{
+		wall_point.y = cross_point.y;
+		wall_point.x = cross_point.x;
+	}
+
+	/*
+	 * distance_to_wall = abs(player_posY - wall_pointY)
+	 * / cos(player_angle);
+	 *
+	 * fishbow effect corection 
+	 * beta = view_angle - FOV;
+	 * correct dist = wall_point x cos(beta);
+	 */
+
+	/*
+	 * drawing the wall
+	 *
+	 * height_projection_slice = 64 * 277 / distance_to_wall;
+	 *
+	 * while (x < 319)
+	 * {	
+	 * starting point 100 - (height_projection_slice / 2);
+	 * end point starting point + height_projection_slice;
+	 * draw_stuff(insstance, startPoint, endPoint);
+	 *}
+	 */
+	return (wall_point);
+}
+
 
 /**
  * main - starting point
@@ -112,6 +210,11 @@ void draw_stuff(SDL_Instance instance)
 int main(void)
 {
 	SDL_Instance instance;
+	coordinates initial_pos, hit_point;
+
+	int player_angle = 45;
+
+	int distance_to_wall, height_projection_slice;
 
 	if (init(&instance) != 0)
 	{
@@ -145,7 +248,26 @@ int main(void)
 		if (poll_events() == 1)
 			break;
 
-		draw_stuff(instance);
+		/*
+		 * while loop for drawing all the lines
+		 * while (x < screen width)
+		 * draw a strip 
+		 *
+		 * increment by 1
+		 */
+
+
+		initial_pos.x = 12;
+		initial_pos.y = 12;
+		hit_point = dda_alg(initial_pos);
+
+		distance_to_wall = abs(initial_pos.y - hit_point.y)
+			/ cos(player_angle);
+
+		height_projection_slice = 64 * 277 / distance_to_wall;
+
+
+		draw_stuff(instance, hit_point, height_projection_slice);
 		SDL_RenderPresent(instance.renderer);
 	}
 	SDL_DestroyRenderer(instance.renderer);
